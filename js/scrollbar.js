@@ -46,53 +46,33 @@
 				this.scrollContent[0].style.top = -contentTop + "px";
 			}
 		},
-		mouseWheel: function(event) {
+		updatePosition: function(offset) {    //改变滚动条和内容位置
 			var barMostTop = this.barMostTop(); //滚动条可滚动的最大距离
 			var scrollTop = this.barTop(); //滚动条距离顶部的距离
 			//滚动向上滚
-			if(event.deltaY < 0) {
-				if(scrollTop <= 0) {
-					this.scrollBar[0].style.top = 0;
-					return;
-				}
-				this.scrollBar[0].style.top = (this.barTop() - 10) + "px" ;
-			}
-			if(event.deltaY < 0 && scrollTop <=0 ) {
+			if(scrollTop <=0 && offset < 0) { //滚动条距离顶部小于0且向上滚动
 				this.scrollBar[0].style.top = 0;
 				return;
 			}
-			else {
-				if(scrollTop >= barMostTop) {
-					this.scrollBar[0].style.top = barMostTop + "px";
-				}
-				else {
-					this.scrollBar[0].style.top = (this.barTop() + 10) + "px" ;
-				}
-			}
-			//公式计算内容距离顶部的距离
-			this.contentScroll();
-		},
-		mouseMove: function(e) {
-			var barMostTop = this.barMostTop(); //滚动条可滚动的最大距离
-			var scrollTop = this.barTop(); //滚动条距离顶部的距离
-			var y2 = e.clientY; 
-			var direction = y2-self.y1;
-			//不允许滚动条在可视范围内滚动
-			if( scrollTop <= 0 && direction < 0) {
-				this.scrollBar[0].style.top = 0;
-				return;
-			}
-			else if(scrollTop >= barMostTop && direction > 0) {
+			else if(scrollTop >= barMostTop && offset > 0) {
 				this.scrollBar[0].style.top = barMostTop + "px";
 				return;
 			}
 			else {
-				this.scrollBar[0].style.top = this.barTop() + direction + "px";
+				this.scrollBar[0].style.top = this.barTop() + offset + "px" ;
 			}
-			self.y1 = y2;
-			//内容区滚动	
 			//公式计算内容距离顶部的距离
 			this.contentScroll();
+		}, 	
+		mouseWheel: function(event) {  //鼠标滚动移动方向和距离
+			var offset = event.deltaY < 0 ? -10 : 10
+			this.updatePosition(offset);
+		},
+		mouseMove: function(e) {   //移动鼠标移动方向和距离
+			var y2 = e.clientY; 
+			var offset = y2-self.y1;
+			self.y1 = y2;
+			this.updatePosition(offset);
 		},
 		start:function() {
 			this.initBar();
