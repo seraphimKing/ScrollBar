@@ -1,0 +1,23 @@
+* {
+	margin: 0;
+	padding: 0;
+}
+ul,li,ol {
+	list-style: none;
+}
+img {
+	border: 0;
+	vertical-align: middle;
+}
+button {
+	cursor: pointer;
+}
+a {
+	color: #666;
+	text-decoration: none;
+	outline: 0;
+}
+a:hover {
+	color: #666;
+}
+.clearfix{overflow:hidden;_zoom:1;}
